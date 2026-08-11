@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI at WCCCD — The Briefing Package</title>
+<style>
+:root {
+  --green:#1e3a5f; --green-dark:#0f2038; --gold:#b9862c; --gold-light:#f0a35e;
+  --bg:#f4efe5; --card:#fffdf7; --ink:#28211d; --muted:#8a7d6d; --line:#e5dbc8;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI', system-ui, -apple-system, Calibri, sans-serif; background:var(--bg); color:var(--ink); line-height:1.55; }
+a { color:var(--green); }
+
+.topbar { background:linear-gradient(135deg,#122844,#0f2038); color:#fff; padding:14px 22px; display:flex; align-items:center; gap:14px; position:sticky; top:0; z-index:50; box-shadow:0 2px 8px rgba(0,0,0,.18); }
+.topbar .wordmark { font-size:21px; font-weight:800; letter-spacing:.5px; white-space:nowrap; }
+.topbar .wordmark .gold { color:var(--gold-light); }
+.topbar h1 { font-size:17px; font-weight:650; letter-spacing:.2px; }
+.topbar .sub { font-size:12px; opacity:.85; }
+.topbar .spacer { flex:1; }
+.topbar .badge { font-size:11px; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.35); padding:3px 10px; border-radius:20px; white-space:nowrap; }
+
+nav.tabs { background:var(--green-dark); display:flex; overflow-x:auto; position:sticky; top:62px; z-index:49; }
+nav.tabs a { display:inline-block; text-decoration:none; color:#dfe8df; padding:12px 18px; font-size:13.5px; font-weight:600; cursor:pointer; white-space:nowrap; border-bottom:3px solid transparent; }
+nav.tabs a:hover { background:rgba(255,255,255,.07); color:#fff; }
+nav.tabs a.active { color:#fff; border-bottom-color:var(--gold-light); background:rgba(255,255,255,.06); }
+/* No-JavaScript navigation: panels respond to URL fragments (#memo, #framework, ...) */
+main:has(section.panel:target) section.panel { display:none; }
+section.panel:target { display:block !important; animation:fade .25s ease; }
+body:has(#memo:target) nav.tabs a[href="#memo"],
+body:has(#framework:target) nav.tabs a[href="#framework"],
+body:has(#companion:target) nav.tabs a[href="#companion"],
+body:has(#demo:target) nav.tabs a[href="#demo"],
+body:has(#home:target) nav.tabs a[href="#home"] { color:#fff; border-bottom-color:var(--gold-light); background:rgba(255,255,255,.06); }
+body:has(#memo:target) nav.tabs a[href="#home"].active,
+body:has(#framework:target) nav.tabs a[href="#home"].active,
+body:has(#companion:target) nav.tabs a[href="#home"].active,
+body:has(#demo:target) nav.tabs a[href="#home"].active { color:#dfe8df; border-bottom-color:transparent; background:transparent; }
+
+main { max-width:920px; margin:0 auto; padding:26px 18px 80px; }
+section.panel { display:none; }
+section.panel.active { display:block; animation:fade .25s ease; }
+@keyframes fade { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+
+.hero { background:linear-gradient(135deg, #122844 0%, #2e5077 100%); color:#fff; border-radius:14px; padding:34px 30px; margin-bottom:22px; }
+.hero h2 { font-size:26px; margin-bottom:10px; }
+.hero p { font-size:15px; opacity:.94; max-width:64ch; }
+.hero .rule { display:inline-block; margin-top:14px; font-style:italic; font-size:13.5px; color:var(--gold-light); }
+
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:6px 0 20px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:8px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+.card .num { font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--gold); text-transform:uppercase; }
+.card h3 { font-size:16px; color:var(--green-dark); }
+.card p { font-size:13px; color:var(--muted); flex:1; }
+.card .go { align-self:flex-start; background:var(--green); color:#fff; border:0; border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer; }
+.card .go:hover { background:var(--green-dark); }
+.card.demo .go { background:var(--gold); }
+.card.demo .go:hover { background:#d09a33; }
+
+.note { background:#f5ead0; border:1px solid #e0d0a4; border-radius:10px; padding:12px 16px; font-size:13px; color:#5a4a14; margin-bottom:20px; }
+
+.doc { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:34px 36px; box-shadow:0 1px 4px rgba(0,0,0,.05); }
+.dochead { display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin-bottom:18px; }
+.dochead h2 { font-size:20px; color:var(--green-dark); }
+.dl { background:var(--green); color:#fff !important; text-decoration:none; font-size:12.5px; font-weight:600; padding:8px 14px; border-radius:8px; white-space:nowrap; }
+.dl:hover { background:var(--green-dark); }
+
+.doc h1 { font-size:21px; color:var(--green); margin:26px 0 10px; }
+.doc h2 { font-size:17px; color:var(--gold); margin:20px 0 8px; }
+.doc h3 { font-size:15px; color:var(--green-dark); margin:16px 0 6px; }
+.doc p { margin:0 0 12px; font-size:14.5px; }
+.doc ul, .doc ol { margin:0 0 14px 24px; font-size:14.5px; }
+.doc li { margin-bottom:6px; }
+.doc table { border-collapse:collapse; width:100%; margin:14px 0 20px; font-size:13px; }
+.doc th { background:var(--green); color:#fff; text-align:left; padding:8px 10px; border:1px solid var(--green-dark); }
+.doc td { border:1px solid var(--line); padding:8px 10px; vertical-align:top; }
+.doc tr:nth-child(even) td { background:#e4eaf3; }
+.doc strong { color:var(--green-dark); }
+
+.demo-wrap iframe { width:100%; height:72vh; border:1px solid var(--line); border-radius:12px; background:#fff; }
+.demo-actions { display:flex; gap:10px; flex-wrap:wrap; margin:0 0 14px; }
+.demo-actions a { text-decoration:none; }
+
+footer { text-align:center; font-size:11.5px; color:var(--muted); padding:26px 10px 40px; }
+@media print {
+  .topbar, nav.tabs, .card .go, .dl, .demo-actions { display:none !important; }
+  section.panel { display:block !important; page-break-after:always; }
+  .doc { border:0; box-shadow:none; }
+}
+@media (max-width:640px) { .doc { padding:22px 18px; } .hero { padding:24px 20px; } nav.tabs { top:58px; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wordmark">WC<span class="gold">CCD</span></div>
+  <div>
+    <h1>AI Briefing Package</h1>
+    <div class="sub">Wayne County Community College District · Prepared for the Chancellor’s Cabinet · August 2026</div>
+  </div>
+  <div class="spacer"></div>
+  <span class="badge">DRAFT — for internal review</span>
+</header>
+
+<nav class="tabs" id="tabs">
+  <a href="#home" class="active">Start here</a>
+  <a href="#memo">1 · Briefing Memo</a>
+  <a href="#framework">2 · Adoption Framework</a>
+  <a href="#companion">3 · Course Companion</a>
+  <a href="#demo">4 · Live Demo (ENG 119)</a>
+</nav>
+
+<main>
+
+<section class="panel active" id="home">
+  <div class="hero">
+    <a href="https://www.wcccd.edu/office-of-the-chancellor/2026-%E2%80%93-2027-chancellors-action-priorities" target="_blank" rel="noopener"
+       style="display:inline-block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);font-weight:700;margin-bottom:8px;text-decoration:none;border-bottom:1px dotted var(--gold-light)"
+       title="View the Chancellor’s Action Priorities on wcccd.edu">Built on the Chancellor’s 2026–2027 Action Priorities ↗</a>
+    <h2>The WCCCD AI Adoption Framework</h2>
+    <p>The District’s plan for adopting artificial intelligence — directed by Action Priority 3 and organized
+    around all twelve of the Chancellor’s strategic priorities. This package contains four parts: a briefing
+    memo, the draft framework itself, the first initiative developed under its rules (Course Companion
+    practice apps for gateway courses), and a working demonstration that is live today for ENG 119.</p>
+    <span class="rule">Every AI use case serves a named outcome — for our students, our operations, and our mission.</span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="num">Read first · 2 pages</div>
+      <h3>Briefing Memo</h3>
+      <p>Introduces the framework and where it stands, the Course Companion initiative, and the live example — with next steps for Cabinet.</p>
+      <a class="go" href="#memo" style="text-decoration:none">Open the memo</a>
+    </div>
+    <div class="card">
+      <div class="num">The decision document</div>
+      <h3>AI Adoption Framework <span style="font-weight:400;color:var(--muted)">(draft)</span></h3>
+      <p>Strategy, governance, risk tiers, build standards, agent parameters, and a twelve-month plan of work — organized around the twelve Action Priorities.</p>
+      <a class="go" href="#framework" style="text-decoration:none">Open the framework</a>
+    </div>
+    <div class="card">
+      <div class="num">For Academic Affairs &amp; faculty</div>
+      <h3>Course Companion Framework</h3>
+      <p>The initiative explained: syllabus-aligned practice apps for gateway courses, with the faculty-adoption questions answered in advance.</p>
+      <a class="go" href="#companion" style="text-decoration:none">Open the document</a>
+    </div>
+    <div class="card demo">
+      <div class="num">Five minutes · live now</div>
+      <h3>ENG 119 Companion</h3>
+      <p>The working demonstration: English I practice app, built by District staff, zero student data collected. ENG 120 is in process on the same engine.</p>
+      <a class="go" href="#demo" style="text-decoration:none">Launch the demo</a>
+    </div>
+  </div>
+
+  <div class="note"><strong>This page is itself the argument.</strong> This briefing package is a single self-contained
+  file — no server, no login, no data collected — built the same way the Course Companion apps are built.
+  What you are using right now is what the initiative proposes to give students.</div>
+</section>
+
+<section class="panel" id="memo">
+  <div class="doc">
+    <div class="dochead">
+      <h2>Briefing Memo — read first</h2>
+      <a class="dl" download="WCCCD_AI_Cabinet_Briefing_Memo.docx" href="data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,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">⬇ Download Word original</a>
+    </div>
+    <p><strong>WAYNE COUNTY COMMUNITY COLLEGE DISTRICT</strong></p>
+<p><strong>MEMORANDUM</strong></p>
+<p><strong>TO:</strong> Chancellor’s Cabinet</p>
+<p><strong>FROM:</strong> [Name, Title]</p>
+<p><strong>DATE:</strong> August 2026</p>
+<p><strong>RE:</strong> The draft AI Adoption Framework, and a first
+initiative under it: Course Companion apps for gateway courses</p>
+<p>Action Priority 3 of the Chancellor’s 2026–2027 Action Priorities
+directs the District to develop an AI-driven efficiency model and
+policies. This memo reports on that work. It does three things:
+introduces the draft AI Adoption Framework and where it stands;
+introduces the Gateway Course Companion — a concrete, student-facing
+initiative developed under the framework’s rules; and shows a working
+example, live now, that aligns with the priorities the framework is
+built around.</p>
+<p><strong>1. The AI Adoption Framework: what it is and where we
+are</strong></p>
+<p>The draft framework is the District’s plan for adopting artificial
+intelligence deliberately — organized around the twelve Action
+Priorities rather than around the technology. Every AI use case must
+trace to a priority and name the outcome it serves. The framework
+establishes a Steering Committee drawn from existing roles (no new
+positions), an interim Acceptable Use Guideline ready for issuance, a
+risk-tier model with one permanent line — AI does not make consequential
+decisions about people — standards under which District staff may build
+AI tools as well as buy them, governance for AI agents based on what
+they are permitted to do, and a twelve-month plan of work with the first
+pilot live within 90 days of launch. It is grounded in current national
+guidance from EDUCAUSE, NIST, and Achieving the Dream, with every source
+verified current as of August 2026.</p>
+<p><strong>Where we are:</strong> the framework is a completed draft,
+attached to this memo. Nothing in it has been adopted; it comes to
+Cabinet for review, discussion, and — when Cabinet is ready — the three
+decisions listed in its executive summary that put it in motion. In the
+meantime, the District has been able to test the framework’s ideas in
+practice, which is the subject of the rest of this memo.</p>
+<p><strong>2. A first initiative: Course Companion apps for gateway
+courses</strong></p>
+<p>The Gateway Course Companion is a free study application built
+directly from an instructor’s own syllabus. Quizzes, papers, and
+deadlines become interactive lessons, drills, rewrite workshops, and a
+week-by-week semester map, so students get structured practice around
+the clock on any device — and instructors change nothing about how they
+teach. Gateway courses are the target because they are among the
+strongest predictors of persistence and completion: help a student
+through English I or College Algebra and you change their odds of
+finishing.</p>
+<p>Four design choices make the companion fit a community college:</p>
+<ul>
+<li><p><strong>Practice-only, by architecture.</strong> It cannot write
+a student’s paper. Both pilot courses ban AI on submitted work, and the
+companion is structurally consistent with those bans.</p></li>
+<li><p><strong>No student data, no infrastructure.</strong> No servers,
+no accounts, no logins. Progress lives on the student’s own device — no
+FERPA exposure, nothing to secure, no hosting cost.</p></li>
+<li><p><strong>Built by AI, not run on AI.</strong> AI does the
+expensive development work once; nothing generative runs in front of
+students — no wrong answers invented mid-study, no per-use
+cost.</p></li>
+<li><p><strong>The instructor is editor-in-chief.</strong> Content
+derives from the instructor’s syllabus, nothing carries an instructor’s
+name without review, and the attached Course Companion Framework
+document works through the questions faculty — particularly adjunct
+faculty — will raise.</p></li>
+</ul>
+<p><strong>3. A working example, aligned to the priorities</strong></p>
+<p>The ENG 119 Companion (English I) is live now at
+<em>ecrutch1.github.io/Eng119</em>: six quiz-preparation modules and
+four essay-coaching modules mapped to the section’s actual syllabus,
+competencies, and grade weights. The ENG 120 companion (English II) is
+in process on the same engine — produced by swapping course content into
+the ENG 119 architecture, which demonstrates that a companion for
+another gateway course is roughly a week of content work, not a software
+project. How the live example lines up with the priorities the framework
+is built around:</p>
+<table>
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Chancellor’s Action Priority</strong></th>
+<th><strong>How the ENG 119 Companion serves it</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Priority 3 — AI-driven efficiency model and policies</td>
+<td>A working product of the framework’s build standards and risk tiers:
+high-impact use at the lowest possible data risk.</td>
+</tr>
+<tr class="even">
+<td>Priority 4 — Distance learning and virtual student support</td>
+<td>Around-the-clock guided practice on any device, on or off campus,
+online or offline.</td>
+</tr>
+<tr class="odd">
+<td>Priority 8 — High-touch, student-centered support</td>
+<td>Structured practice handles repetition, so class and office-hour
+time can go to teaching, not drill.</td>
+</tr>
+<tr class="even">
+<td>Priority 9 — The Completion Agenda</td>
+<td>Aimed at gateway English, one of the strongest predictors of
+persistence and completion.</td>
+</tr>
+<tr class="odd">
+<td>Equity (framework guiding principle)</td>
+<td>Free, no login, works offline after first load — built for students
+with unreliable devices or data plans.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>4. Next steps</strong></p>
+<p>Three modest steps keep this moving: time on an upcoming Cabinet
+agenda to discuss the draft framework and the decisions it requests; a
+referral to Academic Affairs of the Course Companion’s faculty-adoption
+questions (endorsement of named sections, instructor review and its
+recognition, hosting, and the accessibility pass that must precede any
+district-level rollout); and feedback on both documents by [date]. I
+would welcome the chance to demonstrate the ENG 119 Companion live — it
+takes about five minutes.</p>
+<p><strong>Attachments:</strong> (1) WCCCD AI Adoption Framework, draft,
+August 2026; (2) The Course Companion Framework; (3) ENG 119 Companion,
+live at ecrutch1.github.io/Eng119.</p>
+
+  </div>
+</section>
+
+<section class="panel" id="framework">
+  <div class="doc">
+    <div class="dochead">
+      <h2>WCCCD AI Adoption Framework — draft, August 2026</h2>
+      <a class="dl" download="WCCCD_AI_Adoption_Framework_DRAFT.docx" href="data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,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">⬇ Download Word original</a>
+    </div>
+    <p><strong>WAYNE COUNTY COMMUNITY COLLEGE DISTRICT</strong></p>
+<p><strong>Artificial Intelligence Adoption Framework</strong></p>
+<p>Governance and a Twelve-Month Plan of Work</p>
+<p><em>In support of the Chancellor’s 2026–2027 Action
+Priorities</em></p>
+<p>Prepared for the Chancellor’s Cabinet and Information Technology
+Leadership</p>
+<p><strong>DRAFT — August 2026</strong></p>
+<p><strong>Executive Summary</strong></p>
+<p>This plan is built around the Chancellor’s 2026–2027 Action
+Priorities, not around artificial intelligence. The twelve priorities
+define what WCCCD is working to accomplish: enrollment access and
+affordability, the distance learning campus, workforce partnerships and
+micro-credentials, student-centered support, the Completion Agenda, IT
+transformation, professional development, and the District’s role as a
+community resource. Action Priority 3 — “develop an AI-driven efficiency
+model and policies to automate routine tasks, enhance instruction and
+decision-making, prepare students for future careers, and streamline
+administrative processes” — directs the District to build the policies
+and capacity this framework describes. Every AI use case in this plan
+must connect to one of the twelve priorities and name the outcome it
+serves.</p>
+<p>The framework draws on national guidance from EDUCAUSE, the NIST AI
+Risk Management Framework, and Achieving the Dream’s roadmap for the
+AI-enabled community college, scaled to the governance structures,
+staffing, and student population of a multi-campus urban community
+college district.</p>
+<p>The framework reflects an honest assessment of where the District is
+today: at the beginning. Like most community colleges, WCCCD employees
+are already using generative AI tools — national EDUCAUSE research finds
+94 percent of higher education professionals have used AI for work,
+while only 54 percent are aware of any institutional policy governing
+that use. The risk to the District right now is not runaway autonomous
+AI; it is ungoverned everyday use, AI features arriving silently inside
+platforms we already own, and a missed opportunity to direct AI toward
+the District’s student success goals.</p>
+<p>Accordingly, this framework proposes three areas of work for the next
+twelve months:</p>
+<ul>
+<li><p><strong>1. Put basic governance in place.</strong> A District AI
+Steering Committee built from existing leadership structures, an interim
+Acceptable Use Guideline (drafted in Appendix A), an approved-tools
+list, and a simple risk-tier model that tells every employee what is
+permitted today.</p></li>
+<li><p><strong>2. Build AI literacy for employees and students.</strong>
+Role-based training delivered through existing professional development
+channels, directly supporting Action Priority 11 (technology-focused
+staff training) and Achieving the Dream’s call for AI-agile
+students.</p></li>
+<li><p><strong>3. Run three to four measurable pilots in high-impact
+service areas.</strong> Financial aid communication, student services
+navigation, records compliance, and security operations — piloted at the
+communication and compliance layer, with a person making every decision
+and reviewing every message. Selected for student impact and
+measurability, not for novelty.</p></li>
+</ul>
+<p>Agentic AI — systems that take actions in District systems with
+limited human intervention — is already arriving inside the platforms
+the District licenses: the major higher education vendors now ship agent
+capabilities as standard product. The District cannot choose when agents
+arrive; it can only choose between governed adoption and ungoverned
+arrival. This framework governs them from the start, by parameters
+rather than by calendar: any agent, whether embedded in a licensed
+platform or developed by District staff, may be piloted whenever it
+meets the capability-based requirements in Section 11, which scale with
+what the agent is permitted to do. Only one line is permanent: AI does
+not make consequential decisions about people. Gartner’s public caution
+that more than 40 percent of agentic AI projects may be canceled by the
+end of 2027 is an argument for this discipline, not for delay: the
+projects that fail are those with unclear value and weak controls.</p>
+<p><strong>What Cabinet is asked to approve.</strong> Three decisions
+put this plan in motion: (1) name an executive sponsor and charter the
+District AI Steering Committee, with its first meeting within two weeks;
+(2) authorize issuance of the interim Acceptable Use Guideline in
+Appendix A, which is drafted and ready; and (3) set the expectation that
+the first pilot is live within 90 days, with a progress report to
+Cabinet at that point and pilot results at the end of the first
+semester. Year 1 requires no new positions, but it does require named
+capacity: a designated coordinator assignment within existing staff, and
+committee members given real time for review. The committee delivers a
+consolidated Year 1 cost estimate — licensing, contracted tools, and
+staff time — alongside pilot selection at day 60; exceptions come back
+to Cabinet.</p>
+<p><em><strong>The guiding rule throughout: use the least autonomous
+technology capable of achieving the outcome.</strong></em></p>
+<p><strong>1. The Chancellor’s Action Priorities as the Hub of the
+Plan</strong></p>
+<p>This framework establishes how WCCCD will evaluate, adopt, govern,
+and measure artificial intelligence across the District’s six campuses.
+It is written for the Chancellor’s Cabinet and IT leadership, and it is
+designed to be adopted through the District’s existing governance
+processes rather than to create parallel bureaucracy.</p>
+<p><strong>1.1 Outcomes first</strong></p>
+<p>Each of the twelve Action Priorities names an outcome the District
+has committed to. AI is considered only where it is the least autonomous
+technology capable of advancing one of those outcomes. Priority 3 has a
+different role from the other eleven: it directs the District to build
+the policies, governance, and training that allow AI to serve the rest
+safely. The table below maps each priority to where AI can realistically
+help in Year 1, and where it should wait.</p>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Chancellor’s Action Priority</strong></th>
+<th><strong>Where AI serves this outcome</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Accelerate enrollment management (recruitment, affordability,
+access)</td>
+<td>After-hours inquiry support from public content; plain-language
+drafting of enrollment and affordability communications, human-reviewed.
+A Year 1 pilot area.</td>
+</tr>
+<tr class="even">
+<td>2. Advance facilities development</td>
+<td>Modest Year 1 role: drafting and document support for planning.
+Facilities analytics are a later-year consideration.</td>
+</tr>
+<tr class="odd">
+<td>3. Develop an AI-driven efficiency model and policies</td>
+<td>The enabling priority. This framework — governance, risk tiers,
+acceptable use, literacy, inventory — is its Year 1 deliverable.</td>
+</tr>
+<tr class="even">
+<td>4. Implement the distance learning campus model (Center for Learning
+Technology, virtual student support)</td>
+<td>The most natural home for student-facing AI service: 24/7 navigation
+help and comprehensive virtual support, with the Center for Learning
+Technology as pilot partner.</td>
+</tr>
+<tr class="odd">
+<td>5. Expand marketing, social media, and customer experience</td>
+<td>Drafting and versioning content for human review; measuring service
+experience. Tier 1–2 uses.</td>
+</tr>
+<tr class="even">
+<td>6. Increase workforce and industry partnerships</td>
+<td>Labor-market scanning support and employer engagement materials;
+informs which AI skills regional employers request.</td>
+</tr>
+<tr class="odd">
+<td>7. Develop industry-recognized certificates and
+micro-credentials</td>
+<td>AI-related credentials are themselves a workforce product; AI
+supports curriculum development for review by faculty.</td>
+</tr>
+<tr class="even">
+<td>8. Strengthen student-centered, high-touch support</td>
+<td>AI handles routine questions and paperwork so staff hours shift
+toward direct, personal service. Every student-facing use is evaluated
+for who benefits and who is left out.</td>
+</tr>
+<tr class="odd">
+<td>9. Reimagine the Completion Agenda (dual enrollment, transfer,
+retention, completion)</td>
+<td>Staff-facing advising and outreach support first. Predictive
+analytics only with Tier 3 review and disparate-impact monitoring.</td>
+</tr>
+<tr class="even">
+<td>10. Advance the IT Transformation Plan</td>
+<td>The technical backbone: data management, the AI inventory, the
+embedded-AI audit, and vendor controls all live inside this
+priority.</td>
+</tr>
+<tr class="odd">
+<td>11. Advance professional development (technology-focused training,
+digital skills)</td>
+<td>The delivery channel for all four AI literacy tracks in Section
+8.</td>
+</tr>
+<tr class="even">
+<td>12. Continue innovative continuing education and community
+engagement</td>
+<td>Community-facing AI literacy offerings extend the District’s role as
+a community resource.</td>
+</tr>
+</tbody>
+</table>
+<p>Year 1 pilots draw from Priorities 1, 4, 8, 10, and 11, where risk is
+manageable and results can be measured within a semester. Work under the
+remaining priorities is planned for Year 2 and will be shaped by what
+the pilots show.</p>
+<p><strong>1.2 Building on the District’s Achieving the Dream
+leadership</strong></p>
+<p>WCCCD’s designation as a 2026 Achieving the Dream Leader College is
+directly relevant to this work. ATD’s task force report, Creating the
+AI-Enabled Community College, is the national roadmap most applicable to
+institutions like ours, organized around eight action areas: strategic
+leadership; ethical AI governance; assessment of AI’s impact; staff
+capability building; professional learning and faculty engagement;
+curriculum redesign; workforce alignment; and investment in student
+success through AI. This framework carries out the first four action
+areas in Year 1 and schedules the remaining four for Year 2, keeping the
+District’s AI work centered on student success, consistent with our ATD
+partnership.</p>
+<p><strong>2. Where WCCCD Is Today</strong></p>
+<p>This framework begins with a candid assessment of the District’s
+current position:</p>
+<ul>
+<li><p>Employees and students are already using generative AI tools
+individually, largely without District guidance — consistent with
+national patterns.</p></li>
+<li><p>The District has not yet issued an acceptable-use policy for AI,
+and there is no approved-tools list, risk classification, or AI
+inventory.</p></li>
+<li><p>AI capabilities are already arriving embedded in platforms the
+District licenses — the learning management system, Microsoft
+productivity tools, and enterprise administrative systems — whether or
+not the District initiates an “AI project.”</p></li>
+<li><p>The District has real strengths to build on: a clear
+chancellor-level mandate (Priority 3), an ATD Leader College culture of
+using data to improve student outcomes, and existing professional
+development and shared governance structures that can carry this
+work.</p></li>
+</ul>
+<p>The District is at the beginning of this work, and the plan should
+match that. The appropriate response is neither a ban, which would push
+AI use out of sight, nor a major platform investment the District is not
+yet positioned to govern. It is clear interim guidance, visible
+leadership, training, and a small number of carefully chosen pilots, put
+in place quickly.</p>
+<p><strong>3. Guiding Principles</strong></p>
+<ol type="1">
+<li><p>Start from District outcomes, not tools. Every AI use case must
+trace to one of the Chancellor’s Action Priorities and name the
+enrollment, persistence, completion, service, or efficiency outcome it
+serves — and how we will know.</p></li>
+<li><p>Use the least autonomous technology capable of achieving the
+outcome. If a checklist, workflow rule, or FAQ page solves the problem,
+use that instead.</p></li>
+<li><p>A person is accountable for every consequential decision. AI does
+not decide admissions, financial aid eligibility, grades, discipline,
+accommodations, or employment matters. Responsibility for those
+decisions rests with identified District employees.</p></li>
+<li><p>Equity first. WCCCD serves one of the most diverse student
+populations in Michigan. Every AI deployment is assessed for disparate
+impact and for who is left out — including students on the far side of
+the digital divide.</p></li>
+<li><p>Privacy and compliance by default. FERPA, the GLBA Safeguards
+Rule, and accessibility law (ADA/Section 508, WCAG 2.1 AA) are gate
+requirements, not post-deployment fixes.</p></li>
+<li><p>Transparency. The District maintains an inventory of AI in use,
+discloses when students and employees are interacting with AI, and
+reports pilot results honestly — including failures.</p></li>
+<li><p>Build on existing governance. AI oversight runs through
+structures the District already has — cabinet, shared governance,
+existing committees — with one small coordinating body added.</p></li>
+<li><p>Measure and report. Pilots have baselines, measures, and end
+dates. Results go to Cabinet and, as appropriate, the Board of
+Trustees.</p></li>
+</ol>
+<p><strong>4. Governance: The District AI Steering
+Committee</strong></p>
+<p>National guidance converges on a simple division of labor: a small
+central group sets standards; departments identify and run use cases
+within them. (The strategic hub of this plan is the Action Priorities
+themselves, per Section 1; the committee described here is the standards
+center that keeps the work safe and coherent.) For a district of WCCCD’s
+scale, that center should be a committee, not a new office. No chief AI
+officer is required at this stage.</p>
+<p><strong>4.1 Charge</strong></p>
+<p>The District AI Steering Committee, chartered by the Chancellor and
+chaired by a cabinet-level executive sponsor, is charged to:</p>
+<ul>
+<li><p>Issue and maintain the interim AI Acceptable Use Guideline and
+the approved-tools list.</p></li>
+<li><p>Operate the use-case intake process, applying the risk-tier model
+in Section 5 and the agent capability parameters in Section 11.</p></li>
+<li><p>Maintain the District AI inventory, including AI features
+embedded in licensed platforms.</p></li>
+<li><p>Oversee the AI literacy program and the pilots, and report
+results to Cabinet each semester.</p></li>
+<li><p>Recommend, within 12 months, a permanent policy for adoption
+through District governance and Board processes.</p></li>
+</ul>
+<p><strong>4.2 Membership</strong></p>
+<p>Eight to twelve members, drawn from existing roles: the executive
+sponsor (chair); the CIO or designee (vice-chair and operational lead);
+academic affairs; student services; a data steward from
+records/financial aid; institutional research; human resources;
+procurement and/or general counsel; two faculty representatives named
+through shared governance; and a campus operations representative to
+keep all six campuses in view. Student perspective is engaged at least
+each semester. During the first 90 days the committee meets every two
+weeks; monthly thereafter, with a standing intake docket. Between
+meetings, an expedited review group — the chair, the CIO or designee,
+and the relevant data steward — may approve Tier 1–2 requests, with
+decisions ratified at the next full meeting. The committee is supported
+by a designated program coordinator, an assignment within existing IT or
+institutional effectiveness staff rather than a new position, who
+maintains the inventory, the intake queue, and reporting between
+meetings.</p>
+<p><strong>4.3 Two problems this structure is designed to
+avoid</strong></p>
+<p>The first problem is over-centralization: when IT must approve every
+experiment, review becomes a bottleneck and employees work around it
+with unapproved, untracked tools. The second is fragmentation:
+departments purchase AI tools independently, and the District learns of
+its obligations after contracts are signed. The committee structure
+addresses both. It makes the approved path fast enough that employees
+use it, and it centralizes only what must be centralized — standards,
+the inventory, data rules, and procurement review — while leaving
+ownership of each use case with the unit that does the work. Faculty
+participation through shared governance is essential: guidance that
+touches instruction, evaluation, or workload will not succeed without
+it.</p>
+<p><strong>5. Risk-Tier Framework</strong></p>
+<p>Not all AI use carries the same risk, and a single universal approval
+process would apply too much review to routine drafting help and too
+little to systems that touch student records. The District classifies AI
+use into three tiers, plus a category permanently reserved to human
+decision-makers. Tiers are assigned at intake by the Steering Committee;
+Tier 1 requires no intake at all.</p>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Tier</strong></th>
+<th><strong>What it covers</strong></th>
+<th><strong>Examples</strong></th>
+<th><strong>What is required</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tier 1 Everyday assistance</td>
+<td>Approved tools, public or non-sensitive information only. No student
+or employee records. Output reviewed by the user.</td>
+<td><p>Drafting routine communications</p>
+<p>Summarizing public documents</p>
+<p>Brainstorming, meeting notes</p></td>
+<td>Follow the Acceptable Use Guideline. No approval needed.</td>
+</tr>
+<tr class="even">
+<td>Tier 2 Reviewed work support</td>
+<td>Internal (non-restricted) District content; outputs that inform
+staff work. A person reviews before anything is acted on or sent.</td>
+<td><p>Drafting responses for staff review</p>
+<p>Searching internal policies and manuals</p>
+<p>First-draft job aids and training content</p></td>
+<td>Supervisor awareness; tool on approved list; use case logged in the
+AI inventory.</td>
+</tr>
+<tr class="odd">
+<td>Tier 3 Sensitive or embedded systems</td>
+<td>Anything touching student or employee data (FERPA/GLBA), any AI
+feature in an enterprise platform, any student-facing AI service.</td>
+<td><p>LMS or ERP AI features</p>
+<p>Student-facing chat assistance</p>
+<p>Advising or outreach support tools</p></td>
+<td>Steering Committee review; data protection and accessibility
+assessment; vendor review (Section 7); named owner; monitoring
+plan.</td>
+</tr>
+<tr class="even">
+<td>Reserved to people</td>
+<td>Consequential decisions about people. AI may inform the paperwork
+around these decisions; it does not make or materially influence them.
+Agents themselves are governed by the capability parameters in Section
+11.</td>
+<td><p>Admissions or aid eligibility decisions</p>
+<p>Grading, discipline, accommodations</p>
+<p>Hiring screens and employee evaluation</p></td>
+<td>Never delegated to AI. Agent proposals at any capability level go
+through Section 11.</td>
+</tr>
+</tbody>
+</table>
+<p>This three-tier structure is aligned with the NIST AI Risk Management
+Framework’s functions — Govern, Map, Measure, Manage. Agents, whether
+embedded in licensed platforms or developed by District staff, are in
+effect a fourth tier: their identity, permission, logging, and rollback
+requirements are set by the capability parameters in Section 11.</p>
+<p><strong>6. Data, Privacy, and Compliance Foundations</strong></p>
+<p>Data readiness is the most commonly cited barrier to AI value in
+higher education, and compliance exposure is where community colleges
+carry sector-specific risk. Four obligations shape every tier:</p>
+<ul>
+<li><p><strong>FERPA.</strong> Student education records may never be
+entered into AI tools that have not been reviewed and contracted for
+that purpose. This single rule, communicated clearly, eliminates the
+largest everyday risk the District faces today.</p></li>
+<li><p><strong>GLBA Safeguards Rule.</strong> As a Title IV institution,
+WCCCD is a financial institution under the FTC Safeguards Rule with
+respect to financial aid data. Any AI touching that data falls inside
+the District’s written information security program and is Tier 3 by
+definition.</p></li>
+<li><p><strong>Accessibility.</strong> Student-facing AI services must
+meet WCAG 2.1 AA. Under the Department of Justice’s ADA Title II web
+accessibility rule, as extended by the April 2026 interim final rule,
+large public entities such as WCCCD must comply by April 26, 2027 — a
+deadline that falls within Year 1 of this framework. Vendors must
+document accessibility (e.g., a current VPAT) before
+deployment.</p></li>
+<li><p><strong>Employment-related AI laws.</strong> States are actively
+regulating AI in employment decisions. Under this framework, AI does not
+make employment decisions at any point (Section 5, Reserved to People);
+any tool that would inform such decisions requires legal review before
+adoption.</p></li>
+</ul>
+<p><strong>6.1 A three-level data classification</strong></p>
+<p>Year 1 requires only a simple, teachable classification: Public
+(websites, catalogs, published schedules — usable in any approved tool);
+Internal (policies, procedures, non-sensitive operational documents —
+usable in approved tools configured so District data is not used for
+vendor model training); and Restricted (anything identifying a student
+or employee, all FERPA and GLBA data, health and disability information
+— never in any AI tool absent a contracted, Tier 3-approved system).
+Every employee can learn this in five minutes, and it does most of the
+compliance work.</p>
+<p><strong>7. Build, Buy, and Embedded AI</strong></p>
+<p>AI will reach WCCCD through three channels, and each needs its own
+controls. The District will receive AI — features switched on inside
+platforms already under contract. It will buy AI — dedicated tools and
+services acquired through procurement. And it will build AI — assistants
+and workflows assembled by District staff on approved platforms, such as
+retrieval-based assistants over District policies and configured agents
+within the platforms the District already licenses. Several of the
+strongest pilot candidates in Section 10.2, including the FERPA
+compliance assistant and policy search, are natural in-house builds. For
+received and bought AI, procurement and vendor management are where the
+District exercises most of its control over risk; for built AI, control
+comes from platform standards and the same intake discipline applied to
+everything else. EDUCAUSE has identified AI procurement as a distinct
+institutional challenge precisely because AI risks do not fit
+conventional acquisition review.</p>
+<p><strong>7.1 The AI procurement addendum</strong></p>
+<p>Every new procurement, and every renewal of a platform with AI
+features, includes a short set of vendor questions:</p>
+<ul>
+<li><p>Is District data used to train vendor or third-party models?
+(Required answer: no, contractually.)</p></li>
+<li><p>Which models power the service, and can the vendor change them
+without notice to the District?</p></li>
+<li><p>Are prompts and outputs retained, where, and for how long? Can
+the District export and delete them?</p></li>
+<li><p>Can AI features be disabled independently of the rest of the
+product?</p></li>
+<li><p>What actions can the AI take in other systems, and are all
+actions logged in a form the District can review?</p></li>
+<li><p>How does the vendor test for inaccurate output and disparate
+impact, and how are incidents disclosed to customers?</p></li>
+<li><p>Is accessibility documented (current VPAT)? Is the District
+indemnified for intellectual-property claims?</p></li>
+<li><p>Can costs scale with usage (tokens, transactions, autonomous
+activity), and what caps or alerts exist?</p></li>
+</ul>
+<p><strong>7.2 The embedded-AI audit</strong></p>
+<p>Beginning in the first 90 days and completed by month six, IT
+leadership conducts a one-time audit of AI capabilities already present
+or announced in the District’s licensed platforms — the LMS, Microsoft
+environment, ERP/SIS, communication and contact-center tools, and
+security products — and records each in the AI inventory with a
+decision: enabled with review, disabled pending review, or not
+applicable. This prevents the District from acquiring new AI capability
+through a routine software update without having made a deliberate
+decision about it.</p>
+<p><strong>7.3 When the District builds</strong></p>
+<p>Building is encouraged where a workflow is District-specific, the
+knowledge involved is internal, and a commercial product would be paying
+a vendor to configure what staff can configure themselves. Building also
+develops exactly the internal capability that Action Priorities 3 and 11
+call for. It carries one discipline requirement: a built assistant is
+governed identically to a purchased one. Every internal build must:</p>
+<ul>
+<li><p>Go through the same intake, risk-tier assignment, and inventory
+registration as a purchased system.</p></li>
+<li><p>Be built on a District-approved platform — not on personal
+accounts or unapproved services — so access, data handling, and logging
+are inspectable.</p></li>
+<li><p>Draw only on approved, current knowledge sources, with a named
+owner responsible for keeping content accurate.</p></li>
+<li><p>Be tested before deployment for accuracy, source citation,
+permission boundaries, and accessibility, like any Tier 2 or Tier 3
+system.</p></li>
+<li><p>Have documentation and a designated backup owner, so the tool
+survives the departure of the person who built it.</p></li>
+</ul>
+<p>The build-or-buy decision itself goes through the Steering Committee
+for anything above Tier 1: build when the workflow is unique to WCCCD
+and the data is internal; buy when the need is commodity and a vendor
+carries the compliance burden; receive-and-review when the capability
+already exists in a contracted platform.</p>
+<p><strong>8. AI Literacy and Workforce Development</strong></p>
+<p>EDUCAUSE’s 2026 workforce research shows AI use is already routine
+among higher education professionals who use it — roughly 72 percent of
+active users engage daily or weekly — while majorities remain concerned
+about risk and most institutions are prioritizing upskilling existing
+staff over new hiring. The District’s priority is to close the gap
+between use and guidance, and training closes that gap more effectively
+than enforcement.</p>
+<p>Delivered through existing professional development structures
+(Action Priority 11), in four role-based tracks:</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 23%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Track</strong></th>
+<th><strong>Audience</strong></th>
+<th><strong>Core content</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Foundations (90 minutes, required)</td>
+<td>All employees</td>
+<td>What AI can and cannot do; the three data classification levels; the
+Acceptable Use Guideline; approved tools; how to report a concern.</td>
+</tr>
+<tr class="even">
+<td>Supervisors</td>
+<td>Managers and chairs</td>
+<td>Reviewing AI-assisted work; setting team norms; recognizing
+over-reliance; intake process.</td>
+</tr>
+<tr class="odd">
+<td>Power users</td>
+<td>Staff in pilot units</td>
+<td>Effective and documented use; verification habits; measuring time
+saved and quality.</td>
+</tr>
+<tr class="even">
+<td>Stewards and builders</td>
+<td>IT, IR, records, financial aid, staff building internal tools</td>
+<td>Vendor review, data protection assessment, inventory management,
+incident response, and the internal build standards in Section 7.3.</td>
+</tr>
+</tbody>
+</table>
+<p>Faculty professional learning runs on a parallel, faculty-led track —
+communities of practice consistent with ATD’s action areas on
+professional learning and faculty engagement — rather than being folded
+into administrative compliance training. Workforce redesign
+conversations that touch workload, evaluation, or working conditions are
+routed through shared governance and, where applicable, collective
+bargaining processes from the start.</p>
+<p><strong>9. Teaching, Learning, and Students</strong></p>
+<p>For a community college, AI in the classroom is at least half the
+conversation, and it is where ATD’s roadmap centers the work. Year 1
+commitments:</p>
+<ul>
+<li><p><strong>Syllabus guidance, not a single mandate.</strong> The
+District provides faculty three model syllabus statements — AI
+prohibited, AI permitted with disclosure, AI encouraged with attribution
+— and each faculty member chooses per course. Clear expectations at the
+course level serve students better than a single district-wide rule.
+EDUCAUSE’s June 2026 study of AI and assessment supports both parts of
+this approach: educators want the discretion to decide when AI helps or
+harms their assessment goals, and students currently lack clear guidance
+on when AI use is permitted.</p></li>
+<li><p><strong>Integrity through assignment design.</strong> The
+District does not rely on AI-detection tools as primary evidence in
+integrity cases; their error rates fall disproportionately on
+multilingual learners. Faculty development emphasizes assessment design
+that makes learning visible — consistent with the 2026 EDUCAUSE Horizon
+Report’s finding that institutions are shifting from traditional testing
+toward authentic, process-based demonstrations of learning.</p></li>
+<li><p><strong>Student AI literacy as an outcome.</strong> Consistent
+with ATD’s call for AI-agile graduates and with Action Priorities 6–7,
+the District begins embedding AI literacy in general education and
+workforce programs, and evaluates AI-related micro-credentials with
+regional employers.</p></li>
+<li><p><strong>Student voice and equity monitoring.</strong> Students
+are surveyed on AI use and access annually; every student-facing pilot
+reports usage and outcomes by demographic group so that benefits and
+gaps are documented.</p></li>
+</ul>
+<p><strong>10. The 12-Month Roadmap</strong></p>
+<p>This schedule is paced by decision speed, not by the calendar. The
+documents the District needs on day one — the interim guideline, the
+intake form, the inventory structure, the committee charge — are already
+drafted in this framework’s appendices, so the Steering Committee’s
+first meeting ratifies and adjusts them rather than starting from
+nothing. Workstreams run in parallel: training, procurement controls,
+and pilot preparation begin while the inventory is still being built.
+The schedule slows down only where sequencing genuinely matters: no
+student-facing pilot launches before its tool passes Tier 3 review, and
+no agent is piloted before it meets the capability parameters in Section
+11.</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 20%" />
+<col style="width: 62%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Period</strong></th>
+<th><strong>Focus</strong></th>
+<th><strong>Key deliverables</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Days 1–30 Launch</td>
+<td>Decisions and guidance in force</td>
+<td><p>Cabinet names the executive sponsor and charters the Steering
+Committee; first meeting held within two weeks</p>
+<p>Interim Acceptable Use Guideline issued (Appendix A —
+pre-drafted)</p>
+<p>Approved-tools list v1 and data classification quick reference
+published</p>
+<p>District-wide communication from the Chancellor</p>
+<p>Baseline survey of employee AI use and policy awareness
+opens</p></td>
+</tr>
+<tr class="even">
+<td>Days 31–60 Mobilize</td>
+<td>Training and intake running</td>
+<td><p>Foundations training begins for all employees</p>
+<p>Use-case intake opens (Appendix B); risk tiers applied</p>
+<p>AI inventory started; procurement addendum in active use</p>
+<p>Knowledge-source readiness: policies and manuals that will feed built
+assistants reviewed for currency, with a content owner named for
+each</p>
+<p>Pilots selected from Section 10.2 with written baselines</p></td>
+</tr>
+<tr class="odd">
+<td>Days 61–90 First pilot live</td>
+<td>Visible results</td>
+<td><p>First pilot launches (a Tier 2 internal pilot can move
+fastest)</p>
+<p>Embedded-AI audit of licensed platforms underway</p>
+<p>Supervisor training track begins in pilot units</p>
+<p>90-day progress report to Cabinet</p></td>
+</tr>
+<tr class="even">
+<td>Months 4–6 Expand</td>
+<td>Full pilot slate and fall readiness</td>
+<td><p>Remaining pilots launch, including student-facing pilot after
+Tier 3 review</p>
+<p>Monthly pilot metrics; embedded-AI audit completed</p>
+<p>First agent pilot — embedded or District-built (e.g., scheduling or
+ticket creation) — once it meets the Section 11 parameters</p>
+<p>Syllabus guidance issued for the fall term; faculty communities of
+practice underway</p>
+<p>End-of-semester report to Cabinet</p></td>
+</tr>
+<tr class="odd">
+<td>Months 7–9 Evaluate and grow</td>
+<td>Evidence-based expansion</td>
+<td><p>First pilots evaluated against baselines: scale, revise, or
+stop</p>
+<p>Second-wave use cases drawn from the Section 1 priority map as
+warranted</p>
+<p>Permanent AI policy drafted through District governance</p></td>
+</tr>
+<tr class="even">
+<td>Months 10–12 Formalize</td>
+<td>Policy and Year 2</td>
+<td><p>Permanent policy to the Board for adoption</p>
+<p>Year 2 plan and budget proposed</p>
+<p>Agent portfolio and Section 11 parameters reviewed against the first
+year’s evidence</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>10.1 Pilot selection criteria</strong></p>
+<p>A pilot qualifies only if it has: a clear institutional outcome with
+a measurable baseline; a willing process owner; Tier 1–2 data exposure
+(or Tier 3 with full review); human review of every output that reaches
+a student; reversible actions; a contained population; and an end date
+with a decision.</p>
+<p><strong>10.2 Candidate pilots</strong></p>
+<p>These candidates are drawn from the District’s highest-impact service
+areas — financial aid, student services, records compliance, and
+security — because a pilot should matter to students and to the
+Chancellor’s priorities, not merely be easy. The design rule that makes
+this safe: in high-impact areas, AI is piloted at the communication and
+compliance layer, never the decision layer. AI drafts, explains, flags,
+and summarizes; District employees decide.</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 41%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Candidate</strong></th>
+<th><strong>What it does</strong></th>
+<th><strong>Priority alignment</strong></th>
+<th><strong>Tier</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Financial aid communication and file-completeness support</td>
+<td>Drafts plain-language explanations of verification steps,
+missing-document notices, and appeal instructions for staff review;
+flags incomplete files against a checklist. Does not determine
+eligibility or award amounts.</td>
+<td>Priorities 1, 8</td>
+<td>3 (GLBA; contracted tool required)</td>
+</tr>
+<tr class="even">
+<td>24/7 student services navigation</td>
+<td>Answers enrollment, registration, and aid-process questions from
+public District content across all six campuses; hands off to staff with
+a transcript.</td>
+<td>Priorities 1, 4, 8</td>
+<td>3 (student-facing; public data only)</td>
+</tr>
+<tr class="odd">
+<td>FERPA and records compliance support</td>
+<td>Staff-facing assistant that answers disclosure and records questions
+from FERPA guidance and District policy, citing its sources; drafts
+responses for registrar review. Directly reduces the District’s largest
+current AI risk.</td>
+<td>Priority 10</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Security operations support</td>
+<td>Summarizes and prioritizes phishing reports and security alerts for
+IT security staff; drafts user advisories for review. Builds AI
+experience inside the team that will oversee AI security
+district-wide.</td>
+<td>Priority 10</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>Re-enrollment and melt outreach drafting</td>
+<td>Drafts personalized outreach to admitted-but-not-enrolled and
+stopped-out students; staff review and send every message.</td>
+<td>Priorities 1, 9</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>The Steering Committee selects three or four: at least one Tier 2
+pilot (FERPA compliance support or security operations) that can be live
+within 90 days, and at least one student-facing pilot launched after
+full Tier 3 review. In every case a person makes each consequential
+decision and reviews each message before it reaches a student; AI never
+determines eligibility, access, or standing. Each pilot produces a
+measurable service outcome within one semester — verification completion
+rates, time-to-answer, after-hours contacts served, re-enrollment yield,
+or time-to-triage.</p>
+<p><strong>10.3 Measures of success</strong></p>
+<ul>
+<li><p>Governance: interim guideline issued; policy awareness above 80
+percent on the follow-up survey (national baseline: 54 percent); zero
+reportable data incidents involving AI tools.</p></li>
+<li><p>Literacy: Foundations completion rate; supervisor track
+completion in pilot units.</p></li>
+<li><p>Service: for each pilot, change against baseline — e.g.,
+after-hours questions resolved, average response time, staff hours
+redirected to high-touch work, user satisfaction.</p></li>
+<li><p>Equity: usage and outcome data disaggregated by student group for
+any student-facing pilot.</p></li>
+<li><p>Student outcomes: Year 1 measures service results; the Year 2
+plan connects sustained pilots to persistence and completion indicators,
+consistent with the District’s Achieving the Dream practice.</p></li>
+<li><p>Discipline: every pilot ends with a documented decision — scale,
+revise, or stop — based on the measures above.</p></li>
+</ul>
+<p><strong>11. Agentic AI: Governed Adoption</strong></p>
+<p>Agentic AI — systems that can retrieve institutional data, initiate
+workflows, use software tools, and act with limited human intervention —
+differs in kind from the generative AI tools covered elsewhere in this
+framework. An agent requires its own identity, limited permissions,
+complete activity logs, a named owner, and a way to shut it off
+immediately.</p>
+<p>The District does not have the option of deferring this question.
+Ellucian has launched an agentic AI platform for student systems;
+Salesforce ships Agentforce for Education as standard product; Microsoft
+is adding agent capabilities across the productivity environment the
+District already runs. Agent capabilities will reach WCCCD through
+platforms already under contract, likely within Year 1. The choice
+before the District is whether they arrive under the controls in this
+section or without them.</p>
+<p><strong>11.1 Parameters, not a calendar</strong></p>
+<p>The District does not restrict agents by date. Any agent — embedded
+in a licensed platform, or developed by District staff under the build
+standards in Section 7.3 — may be proposed at any time through the
+standard intake process. Risk tiers and capability levels answer
+different questions, and every agent carries both: the tier (Section 5)
+classifies the sensitivity of the data and population involved, while
+the level below classifies the agent’s authority to act. Requirements
+scale with capability:</p>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 35%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Capability level</strong></th>
+<th><strong>What the agent may do</strong></th>
+<th><strong>Requirements to operate</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Level 1 Read and answer</td>
+<td>Retrieves, summarizes, and answers from approved sources. Takes no
+actions in District systems.</td>
+<td>Intake and risk-tier review; Section 7.3 build standards if
+District-built; answers cite their sources.</td>
+</tr>
+<tr class="even">
+<td>Level 2 Transact</td>
+<td>Performs bounded, reversible transactions: creates service tickets,
+schedules appointments, routes forms, sends predefined
+communications.</td>
+<td>Level 1 requirements, plus: a unique service identity with
+least-privilege access (never a shared or employee credential);
+complete, reviewable action logs; a rollback procedure; a human
+escalation path; a contained pilot population before broad release.</td>
+</tr>
+<tr class="odd">
+<td>Level 3 Write to records</td>
+<td>Updates designated fields in a system of record.</td>
+<td>Level 2 requirements, plus: field-level permission scoping; human
+review of writes during the pilot period; reconciliation audits; a
+tested incident-response and correction process.</td>
+</tr>
+<tr class="even">
+<td>Reserved to people (permanent)</td>
+<td>Consequential decisions about people: admissions, aid eligibility,
+grades, discipline, accommodations, employment.</td>
+<td>Not delegated to any AI at any capability level. This line does not
+move with maturity; it is a principle, not a milestone.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>11.2 Standing requirements for every agent</strong></p>
+<p>Regardless of level, every agent operating in District systems has: a
+named institutional owner; a documented business purpose traced to an
+Action Priority; approved data sources; explicitly prohibited actions; a
+way to shut it off immediately; and a scheduled review date. Before its
+first agent goes live, the District confirms the supporting basics are
+in place: the interim guideline in force and training underway; the AI
+inventory current for the systems the agent touches; data classification
+applied to the data involved; identity management able to issue the
+agent its own credentials; and vendor contracts (for embedded agents)
+providing exportable logs and independent disable. For any process being
+automated, the process is mapped and corrected first — agents are
+reserved for steps that require judgment rather than fixed rules.</p>
+<p>Gartner’s public caution — that over 40 percent of agentic AI
+projects may be canceled by the end of 2027, and that many processes
+described as agentic do not require agents at all — is a scoping
+discipline, not a reason to wait: use conventional automation for
+predictable rules, assistants for retrieval and drafting, and agents
+only where a task genuinely requires adaptive judgment. The first agent
+pilots should be internal-facing, transactional, and reversible, with a
+person approving anything that touches a student record. In high-impact
+areas (aid eligibility, admissions, academic standing, accommodations,
+employment), decision authority remains with District employees
+indefinitely.</p>
+<p><strong>12. Sources and Further Reading</strong></p>
+<p><em>Publication dates are listed so readers can judge currency; all
+sources were verified as the most recent available editions as of August
+2026.</em></p>
+<ul>
+<li><p>Achieving the Dream, Creating the AI-Enabled Community College
+(AI Task Force Report, July 2025) — the eight action areas referenced in
+Section 1. Current edition as of August 2026.</p></li>
+<li><p>EDUCAUSE, The Impact of AI on Work in Higher Education (January
+2026) and 2026 EDUCAUSE Workforce Report (June 2026) — adoption,
+policy-awareness, and reskilling findings.</p></li>
+<li><p>EDUCAUSE, 2026 Horizon Report: Teaching and Learning Edition (May
+2026) and The Impact of AI on Learning Assessment (June 2026) — further
+reading for the teaching and learning work in Section 9.</p></li>
+<li><p>NIST AI Risk Management Framework (AI RMF 1.0, January 2023) and
+Generative AI Profile (July 2024) — the Govern/Map/Measure/Manage
+structure behind Section 5. Remains the federal reference standard as of
+August 2026.</p></li>
+<li><p>Gartner, press release, June 2025: “Gartner Predicts Over 40% of
+Agentic AI Projects Will Be Canceled by End of 2027.” (Publicly citable;
+Gartner subscription research should not be quoted in public District
+documents without license.)</p></li>
+<li><p>U.S. Department of Justice, ADA Title II web accessibility rule
+(April 2024), compliance deadlines extended by interim final rule April
+20, 2026 — large public entities must comply by April 26, 2027.</p></li>
+<li><p>Vendor announcements documenting embedded agentic AI in higher
+education platforms: Ellucian Student unified AI platform; Salesforce
+Agentforce for Education (both current as of August 2026) — the basis
+for Section 11’s governed-adoption position.</p></li>
+<li><p>WCCCD, Chancellor’s 2026–2027 Action Priorities; WCCCD Strategic
+Plan; wcccd.edu.</p></li>
+<li><p>U.S. Department of Education FERPA guidance; FTC GLBA Safeguards
+Rule.</p></li>
+</ul>
+<p><strong>Appendix A: Draft Interim AI Acceptable Use
+Guideline</strong></p>
+<p><em>DRAFT for Steering Committee review and Cabinet issuance. Issued
+as interim administrative guidance, effective upon issuance, with a
+60-day comment period through shared governance; feedback is
+incorporated in the first revision. Automatically expires in 12 months
+unless replaced by permanent policy.</em></p>
+<p><strong>A.1 Purpose and scope</strong></p>
+<p>This guideline governs the use of artificial intelligence tools —
+including generative AI chat tools, writing assistants, and AI features
+inside District-licensed software — by all WCCCD employees and
+contractors, on any device, when conducting District business. Classroom
+academic use by students is governed by course syllabi and the academic
+integrity policy.</p>
+<p><strong>A.2 What you may do</strong></p>
+<ul>
+<li><p>Use tools on the District’s approved list for drafting,
+summarizing, brainstorming, translation support, and improving your own
+work products.</p></li>
+<li><p>Use AI with Public information freely, and with Internal
+information only in approved tools configured so District data is not
+used to train vendor models.</p></li>
+<li><p>Use AI to prepare drafts — provided a person reviews anything
+before it is sent, published, or relied upon.</p></li>
+</ul>
+<p><strong>A.3 What you may not do</strong></p>
+<ul>
+<li><p>Enter Restricted data into any AI tool. Restricted data includes
+anything identifying a student or employee: education records (FERPA),
+financial aid information (GLBA), health or disability information,
+Social Security numbers, and personnel records.</p></li>
+<li><p>Use AI to make or materially influence decisions about
+admissions, financial aid, grades, discipline, accommodations, hiring,
+or any consequential matter affecting a person.</p></li>
+<li><p>Present AI-generated content as the District’s official position
+without supervisory review, or present another’s AI-assisted work as
+solely your own.</p></li>
+<li><p>Purchase, subscribe to, or enable AI tools or features for
+District use outside the procurement and intake process — including free
+tools that require accepting terms of service.</p></li>
+<li><p>Build or deploy AI assistants outside District-approved platforms
+and the standards in Section 7.3.</p></li>
+</ul>
+<p><strong>A.4 Your responsibilities</strong></p>
+<ul>
+<li><p>You own your output. AI tools produce confident errors; verify
+facts, citations, calculations, and names before relying on
+them.</p></li>
+<li><p>Be transparent. When AI contributed substantially to a work
+product, say so when asked, and follow any disclosure norms your
+supervisor sets.</p></li>
+<li><p>Accessibility still applies. AI-produced documents and
+communications must meet the District’s accessibility standards before
+distribution.</p></li>
+<li><p>Report concerns — suspected data exposure, harmful or biased
+output, or tools behaving unexpectedly — to the IT Service Desk, which
+routes AI incidents to the Steering Committee.</p></li>
+</ul>
+<p><strong>A.5 Questions and requests</strong></p>
+<p>To request a new tool or propose an AI use case, submit the intake
+form (Appendix B). The Steering Committee reviews requests monthly. This
+guideline is intentionally interim: it will be revised based on the
+first year’s experience and replaced through District governance.</p>
+<p><strong>Appendix B: AI Use-Case Intake Form (fields)</strong></p>
+<p>A one-page form, available digitally, with the following fields:</p>
+<ol type="1">
+<li><p>Requesting department and named business owner.</p></li>
+<li><p>Which Chancellor’s Action Priority the use case advances, and the
+specific outcome it affects (enrollment, persistence, completion,
+service time, cost).</p></li>
+<li><p>Current baseline (what is measured today, or what will be
+measured before launch).</p></li>
+<li><p>Proposed tool or vendor, and whether it is new or a feature of an
+existing platform.</p></li>
+<li><p>Data involved, by classification level (Public / Internal /
+Restricted), and populations affected.</p></li>
+<li><p>What the AI produces, and who reviews it before it is acted
+on.</p></li>
+<li><p>Actions the system can take on its own, if any — any answer other
+than “none” triggers capability-level review under Section 11.</p></li>
+<li><p>Estimated cost, including usage-based pricing exposure.</p></li>
+<li><p>Proposed success measures and pilot end date.</p></li>
+</ol>
+<p><strong>Appendix C: District AI Inventory (fields)</strong></p>
+<p>Maintained by IT on behalf of the Steering Committee. One record per
+AI system or embedded AI feature:</p>
+<p>Product and vendor; models used (if disclosed); business owner;
+technical owner; use case; risk tier; population affected; data accessed
+by classification; systems connected; actions permitted; approval status
+and date; training-data contract terms; accessibility documentation;
+evaluation results; contract renewal date; incident history; operating
+status (active, pilot, disabled, retired).</p>
+
+  </div>
+</section>
+
+<section class="panel" id="companion">
+  <div class="doc">
+    <div class="dochead">
+      <h2>The Course Companion Framework</h2>
+      <a class="dl" download="CourseCompanionFramework.docx" href="data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,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">⬇ Download Word original</a>
+    </div>
+    <p><strong>The Course Companion Framework</strong></p>
+<p><em>Syllabus-aligned practice apps for gateway courses — live now for
+ENG 119 and ENG 120 at WCCCD</em></p>
+<p><strong>The idea</strong></p>
+<p>Gateway English courses are among the strongest predictors of
+persistence and completion — and the courses where students most need
+structured, repeated practice. The Course Companion is a free study app
+built directly from the instructor’s own syllabus: every quiz, paper,
+and deadline is mapped to interactive lessons, drills, rewrite
+workshops, and a week-by-week semester map. Students get 24/7 guided
+practice on their phone, tablet, or computer; instructors change nothing
+about how they teach.</p>
+<p><strong>What exists today</strong></p>
+<p>Two live applications: <strong>the ENG 119 Companion</strong>
+(English 1, Summer 2026) and <strong>the ENG 120 Companion</strong>
+(English 2, Summer 2026), each aligned to its section’s official
+syllabus — weekly test prep, essay and research-paper coaching, daily
+spaced-repetition warm-ups, mastery tracking, and a condensed syllabus
+in which every week links to the module that preps it. Each app is a
+single self-contained file served free from the web; no installation, no
+login, and it keeps working offline.</p>
+<p><strong>Why this design fits a community college</strong></p>
+<ul>
+<li><p><strong>Academic-integrity-safe by design.</strong> Both pilot
+courses ban AI tools on submitted work. The companion respects that
+policy structurally: it is practice-only and cannot write a student’s
+paper.</p></li>
+<li><p><strong>Zero infrastructure, zero data risk.</strong> No servers,
+no accounts, no student data collected — progress lives on the student’s
+own device. Nothing to secure, no FERPA exposure, and hosting is
+free.</p></li>
+<li><p><strong>Built by AI, not run on AI.</strong> AI does the
+expensive work once, at development time. Nothing generative runs while
+students study — no hallucinated answers in front of learners, and no
+per-use cost to the college.</p></li>
+<li><p><strong>Faculty stay in control.</strong> All content derives
+from the instructor’s syllabus, and the app tells students at every turn
+that the official documents and Blackboard govern.</p></li>
+</ul>
+<p><strong>The platform claim</strong></p>
+<p>The engine — lessons, drills, workshops, mastery scoring,
+gamification, syllabus mapping — is course-agnostic. The ENG 120 app was
+produced from the ENG 119 engine by swapping course content and visual
+identity: proof that the architecture is reusable. Standing up a
+companion for a new gateway course (College Algebra, Intro Psychology,
+Anatomy &amp; Physiology) is roughly a week of content work, not a
+software project.</p>
+<p><strong>Roadmap</strong></p>
+<ul>
+<li><p><strong>Phase 1 — done:</strong> ENG 119 and ENG 120 companions
+live for Summer 2026 sections.</p></li>
+<li><p><strong>Phase 2 — faculty adoption:</strong> instructor
+review-and-approval workflow (see next page), pilot with enrolled
+sections, expanded question pools, and a WCAG / Section 508
+accessibility pass.</p></li>
+<li><p><strong>Phase 3 — insight:</strong> opt-in, aggregate instructor
+dashboards showing where practice stalls — the one phase that adds
+hosting, sequenced after a formal privacy review.</p></li>
+<li><p><strong>Phase 4 — scale:</strong> extend across the district’s
+gateway courses, one syllabus at a time, with Blackboard-embedded
+delivery.</p></li>
+</ul>
+<p><strong>Faculty Adoption &amp; Governance</strong></p>
+<p><em>The concerns instructors — especially adjunct faculty — will
+raise, considered in advance</em></p>
+<p>Adoption succeeds or fails with the faculty delivering these courses,
+most of whom are adjuncts teaching on per-course contracts. Their likely
+objections are legitimate, and the framework is designed so that each
+has a concrete answer. The organizing principle: <strong>the instructor
+is the editor-in-chief of their section’s companion</strong> — nothing
+carries their name without their review, and keeping the app current
+costs them a five-minute email, not unpaid labor. Each answer below is
+consistent with the draft WCCCD AI Adoption Framework: the same build
+standards, risk tiers, and course-level syllabus guidance (Sections 5,
+7.3, and 9).</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 39%" />
+<col style="width: 39%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Area</strong></td>
+<td><strong>The likely faculty concern</strong></td>
+<td><strong>How the framework answers it</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Instructor authority</strong></td>
+<td>“My name, my policies, and my course are in an app I never approved.
+If it misstates a deadline, I field the fallout.”</td>
+<td>Opt-in by design: no section goes live without instructor sign-off.
+A printable review copy of every lesson, drill, and answer lets an
+instructor vet the full app in ~30 minutes. Two tiers — “unofficial
+study aid” vs. “instructor-reviewed” — with the instructor's name
+appearing only at the level they approve.</td>
+</tr>
+<tr class="odd">
+<td><strong>Currency</strong></td>
+<td>“My schedule is tentative and changes weekly through Blackboard. A
+static app is out of date by Week 2 — and students will say ‘but the app
+said.’”</td>
+<td>A named update channel with a committed turnaround (a schedule
+change is a five-minute email, not a software project), a visible
+“aligned to syllabus dated ___” stamp in the app, and standing in-app
+language that Blackboard and the official syllabus always govern.</td>
+</tr>
+<tr class="even">
+<td><strong>Interpretation &amp; rubrics</strong></td>
+<td>“Literature is contested. The app tells students what a story's
+climax or theme is — and its practice scoring rubric isn't my grading
+rubric. Students will think a 95 in the app predicts an A from me.”</td>
+<td>Interpretation-sensitive content is phrased as a reading, not the
+reading, and is editable at instructor request. Practice scores are
+explicitly labeled as practice; rubric language can be aligned to — or
+hidden in favor of — the instructor's own criteria.</td>
+</tr>
+<tr class="odd">
+<td><strong>Academic integrity</strong></td>
+<td>“Could students submit the app's model paragraphs? Does drill
+content leak my assessments?”</td>
+<td>All content is original practice material distinct from course
+assessments; model passages are short and tied to invented prompts,
+unusable as submissions. The app contains no generative AI and cannot
+write student work — structurally compliant with the courses' own AI
+bans.</td>
+</tr>
+<tr class="even">
+<td><strong>Workload</strong></td>
+<td>“Adjuncts are paid per course. Anything that creates support
+questions or monitoring duties is unpaid work.”</td>
+<td>The instructor's total obligation is one review pass and optional
+change-request emails. There is nothing to administer, no accounts to
+manage, and no dashboard to check. Optional student-generated practice
+reports exist only if an instructor wants them for participation
+credit.</td>
+</tr>
+<tr class="odd">
+<td><strong>Equity &amp; access</strong></td>
+<td>“What about students without reliable devices, or students using
+screen readers?”</td>
+<td>The app is a single free file that runs offline on any phone,
+tablet, or computer — no login, no data plan dependency after first
+load. A WCAG / Section 508 accessibility pass is scheduled in Phase 2,
+before any district-level adoption.</td>
+</tr>
+<tr class="even">
+<td><strong>Data &amp; privacy</strong></td>
+<td>“What student data does this collect, and who sees it?”</td>
+<td>None. Progress is stored only on the student's own device. No
+accounts, no tracking, no FERPA-covered records. Any future analytics
+(Phase 3) would be opt-in, aggregate, and precede a formal privacy
+review.</td>
+</tr>
+<tr class="odd">
+<td><strong>Role of faculty</strong></td>
+<td>“Is this a step toward replacing instruction?”</td>
+<td>The companion teaches nothing on its own authority — every module
+points students back to the assigned reading, the instructor, and the
+classroom. It is a practice field attached to their course, not a
+course.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What Academic Affairs would need to decide</strong></p>
+<ul>
+<li><p><strong>Endorsement policy:</strong> whether companions may
+reference a section and instructor by name, and under what approval
+process.</p></li>
+<li><p><strong>Ownership and branding:</strong> use of WCCCD’s name,
+treatment of syllabus content as source material, and where the apps are
+hosted (external pages now; Blackboard embedding recommended at
+scale).</p></li>
+<li><p><strong>Compensation for review:</strong> whether the instructor
+review pass is recognized (stipend, service credit, or professional
+development), particularly for adjunct faculty.</p></li>
+<li><p><strong>Accessibility timeline:</strong> Section 508 conformance
+becomes mandatory at district adoption; the Phase 2 pass should precede
+any official rollout.</p></li>
+<li><p><strong>Evaluation design:</strong> what success looks like for
+the pilot — usage, pass rates, persistence into the next course —
+measured without collecting individual student data.</p></li>
+</ul>
+<p>Eric Crutchfield · ecrutch25@gmail.com · August 2026 · Live demos:
+ecrutch1.github.io/Eng119 · ecrutch1.github.io/Eng120</p>
+
+  </div>
+</section>
+
+<section class="panel" id="demo">
+  <div class="doc">
+    <div class="dochead">
+      <h2>Live demonstration — the ENG 119 Companion</h2>
+    </div>
+    <div class="demo-actions">
+      <a class="dl" href="https://ecrutch1.github.io/Eng119/" target="_blank" rel="noopener">↗ Open full-screen in a new tab</a>
+    </div>
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:12px">English I practice companion: six quiz-prep modules and four essay-coaching modules mapped to the
+    section’s actual syllabus. All progress stays on the student’s device — no accounts, no student data collected.
+    The ENG 120 (English II) companion is in process on the same engine.</p>
+    <div class="demo-wrap">
+      <iframe src="https://ecrutch1.github.io/Eng119/" title="ENG 119 Companion live demo" loading="lazy"></iframe>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">If the preview does not load in this window — some networks block embedded pages — use the
+    “Open full-screen in a new tab” button above; the companion itself works on any phone, tablet, or computer.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>AI at WCCCD Briefing Package · DRAFT for internal review · Contains no student or employee data ·
+Documents downloadable above in Word format for the official record<br>
+Source: <a href="https://www.wcccd.edu/office-of-the-chancellor/2026-%E2%80%93-2027-chancellors-action-priorities" target="_blank" rel="noopener">Chancellor’s 2026–2027 Action Priorities, wcccd.edu</a></footer>
+
+<script>
+/* Enhancement only — navigation works without JavaScript via URL fragments. */
+(function() {
+  function sync() {
+    var id = (location.hash || '#home').slice(1);
+    document.querySelectorAll('section.panel').forEach(function(s) { s.classList.toggle('active', s.id === id); });
+    document.querySelectorAll('nav.tabs a').forEach(function(a) { a.classList.toggle('active', a.getAttribute('href') === '#' + id); });
+    window.scrollTo({ top: 0 });
+  }
+  window.addEventListener('hashchange', sync);
+  sync();
+})();
+</script>
+</body>
+</html>
