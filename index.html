@@ -106,7 +106,7 @@ footer { text-align:center; font-size:11.5px; color:var(--muted); padding:26px 1
     <div class="sub">Wayne County Community College District · Prepared for the Chancellor’s Cabinet · August 2026</div>
   </div>
   <div class="spacer"></div>
-  <span class="badge">DRAFT v13 · Aug 12, 2026 — for internal review</span>
+  <span class="badge">DRAFT v14 · Aug 12, 2026 — for internal review</span>
 </header>
 
 <nav class="tabs" id="tabs">
@@ -1526,7 +1526,7 @@ ecrutch1.github.io/Eng119 · ecrutch1.github.io/Eng120</p>
 
 </main>
 
-<footer>AI at WCCCD Briefing Package · DRAFT v13 · August 12, 2026 · Contains no student or employee data ·
+<footer>AI at WCCCD Briefing Package · DRAFT v14 · August 12, 2026 · Contains no student or employee data ·
 Documents downloadable above in Word format for the official record<br>
 Source: <a href="https://www.wcccd.edu/office-of-the-chancellor/2026-%E2%80%93-2027-chancellors-action-priorities" target="_blank" rel="noopener">Chancellor’s 2026–2027 Action Priorities, wcccd.edu</a></footer>
 
@@ -1541,6 +1541,30 @@ Source: <a href="https://www.wcccd.edu/office-of-the-chancellor/2026-%E2%80%93-2
   }
   window.addEventListener('hashchange', sync);
   sync();
+
+  /* Reliable downloads: convert embedded data: URLs to Blob object URLs at click time.
+     data: hrefs remain as the no-JS fallback. */
+  document.querySelectorAll('a[download][href^="data:"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      try {
+        e.preventDefault();
+        var m = a.getAttribute('href').match(/^data:([^;]+);base64,(.*)$/);
+        var bin = atob(m[2]);
+        var bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        var url = URL.createObjectURL(new Blob([bytes], { type: m[1] }));
+        var tmp = document.createElement('a');
+        tmp.href = url;
+        tmp.download = a.getAttribute('download') || 'document';
+        document.body.appendChild(tmp);
+        tmp.click();
+        tmp.remove();
+        setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+      } catch (err) {
+        window.location.href = a.getAttribute('href'); /* last-resort fallback */
+      }
+    });
+  });
 })();
 </script>
 </body>
