@@ -31,10 +31,12 @@ nav.tabs a.active { color:#fff; border-bottom-color:var(--gold-light); backgroun
 main:has(section.panel:target) section.panel { display:none; }
 section.panel:target { display:block !important; animation:fade .25s ease; }
 body:has(#memo:target) nav.tabs a[href="#memo"],
+body:has(#pres:target) nav.tabs a[href="#pres"],
 body:has(#framework:target) nav.tabs a[href="#framework"],
 body:has(#proof:target) nav.tabs a[href="#proof"],
 body:has(#home:target) nav.tabs a[href="#home"] { color:#fff; border-bottom-color:var(--gold-light); background:rgba(255,255,255,.06); }
 body:has(#memo:target) nav.tabs a[href="#home"].active,
+body:has(#pres:target) nav.tabs a[href="#home"].active,
 body:has(#framework:target) nav.tabs a[href="#home"].active,
 body:has(#proof:target) nav.tabs a[href="#home"].active { color:#dfe8df; border-bottom-color:transparent; background:transparent; }
 
@@ -106,12 +108,13 @@ footer { text-align:center; font-size:11.5px; color:var(--muted); padding:26px 1
     <div class="sub">Wayne County Community College District · Prepared for the Chancellor’s Cabinet · August 2026</div>
   </div>
   <div class="spacer"></div>
-  <span class="badge">DRAFT v15 · Aug 12, 2026 — for internal review</span>
+  <span class="badge">DRAFT v18 · Aug 12, 2026 — for internal review</span>
 </header>
 
 <nav class="tabs" id="tabs">
   <a href="#home" class="active">Home</a>
   <a href="#memo">Briefing Memo</a>
+  <a href="#pres">Presentation</a>
   <a href="#framework">The Framework</a>
   <a href="#proof">Proof of Concept · ENG 119</a>
 </nav>
@@ -141,8 +144,15 @@ footer { text-align:center; font-size:11.5px; color:var(--muted); padding:26px 1
     <a class="go" href="#memo" style="text-decoration:none">Open the memo</a>
   </div>
 
+  <div class="card" style="margin-bottom:14px">
+    <div class="num">Step 2 · The plan at a glance · 12 slides</div>
+    <h3>Presentation</h3>
+    <p>A visual introduction to the framework — more substance than the memo, without the framework’s full detail. View the slides in the browser or download the deck.</p>
+    <a class="go" href="#pres" style="text-decoration:none">View the presentation</a>
+  </div>
+
   <div class="card primary">
-    <div class="num">Step 2</div>
+    <div class="num">Step 3</div>
     <h3 style="font-size:20px">The WCCCD AI Adoption Framework <span style="font-weight:400;color:var(--muted)">(draft, August 2026)</span></h3>
     <p style="font-size:14px">Governance, risk tiers, build standards, agent parameters, and a twelve-month plan of work.
     Two foundations carry it: <strong>every AI use case must serve one of the Chancellor’s twelve Action Priorities</strong>,
@@ -153,11 +163,12 @@ footer { text-align:center; font-size:11.5px; color:var(--muted); padding:26px 1
   </div>
 
   <div class="card demo" style="margin-top:14px">
-    <div class="num">Step 3 · Proof of concept · live now</div>
+    <div class="num">Step 4 · Proof of concept · live now</div>
     <h3>ENG 119 Companion</h3>
     <p>AI generated a complete practice app strictly from the course syllabus — repeatable for any gateway course. Zero student data collected; ENG 120 in process.</p>
     <a class="go" href="#proof" style="text-decoration:none">See the proof of concept</a>
   </div>
+
 
 </section>
 
@@ -297,6 +308,33 @@ August 2026 — the subject of this memo; (2) ENG 119 Companion, live at
 ecrutch1.github.io/Eng119 — proof of concept; (3) Course Companion
 overview — supporting detail for Academic Affairs.</p>
 
+  </div>
+</section>
+
+<section class="panel" id="pres">
+  <div class="doc">
+    <div class="dochead">
+      <h2>Presentation — the plan at a glance</h2>
+      <span style="display:flex;gap:8px;flex-wrap:wrap">
+        <a class="dl" href="#" id="ss-start" style="background:var(--gold)">▶ Slideshow</a>
+        <a class="dl" href="WCCCD_AI_Framework_Cabinet_Deck.pptx" download>⬇ PowerPoint</a>
+        <a class="dl" style="background:transparent;color:var(--green) !important;border:1px solid var(--green)" href="WCCCD_AI_Framework_Cabinet_Deck.pdf" download>PDF</a>
+      </span>
+    </div>
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">Twelve slides introducing the framework — its foundations, the risk tiers, the proof of concept,
+    the Year 1 pilots, the roadmap, and the decisions requested of Cabinet. Press ▶ Slideshow for full-screen viewing (arrow keys or tap to advance), scroll to skim, or download above to present.</p>
+    <img src="pres-01.jpg" alt="Slide 1 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-02.jpg" alt="Slide 2 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-03.jpg" alt="Slide 3 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-04.jpg" alt="Slide 4 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-05.jpg" alt="Slide 5 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-06.jpg" alt="Slide 6 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-07.jpg" alt="Slide 7 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-08.jpg" alt="Slide 8 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-09.jpg" alt="Slide 9 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-10.jpg" alt="Slide 10 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-11.jpg" alt="Slide 11 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
+<img src="pres-12.jpg" alt="Slide 12 of the Cabinet presentation" loading="lazy" style="width:100%;border:1px solid #e5dbc8;border-radius:10px;margin-bottom:12px;display:block">
   </div>
 </section>
 
@@ -1526,9 +1564,19 @@ ecrutch1.github.io/Eng119 · ecrutch1.github.io/Eng120</p>
 
 </main>
 
-<footer>AI at WCCCD Briefing Package · DRAFT v15 · August 12, 2026 · Contains no student or employee data ·
+<footer>AI at WCCCD Briefing Package · DRAFT v18 · August 12, 2026 · Contains no student or employee data ·
 Documents downloadable above in Word format for the official record<br>
 Source: <a href="https://www.wcccd.edu/office-of-the-chancellor/2026-%E2%80%93-2027-chancellors-action-priorities" target="_blank" rel="noopener">Chancellor’s 2026–2027 Action Priorities, wcccd.edu</a></footer>
+
+<div id="ss-overlay" style="display:none;position:fixed;inset:0;background:rgba(10,18,30,.96);z-index:100;flex-direction:column;align-items:center;justify-content:center">
+  <img id="ss-img" src="" alt="Presentation slide" style="max-width:94vw;max-height:84vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.5)">
+  <div style="display:flex;align-items:center;gap:22px;margin-top:16px">
+    <a href="#" id="ss-prev" style="color:#fff;text-decoration:none;font-size:30px;padding:4px 14px" aria-label="Previous slide">‹</a>
+    <span id="ss-count" style="color:#cfd8e6;font-size:14px;font-family:'Segoe UI',Calibri,sans-serif"></span>
+    <a href="#" id="ss-next" style="color:#fff;text-decoration:none;font-size:30px;padding:4px 14px" aria-label="Next slide">›</a>
+    <a href="#" id="ss-close" style="color:#cfd8e6;text-decoration:none;font-size:14px;padding:4px 10px;border:1px solid #45536a;border-radius:8px;font-family:'Segoe UI',Calibri,sans-serif">Close ✕</a>
+  </div>
+</div>
 
 <script>
 /* Enhancement only — navigation works without JavaScript via URL fragments. */
@@ -1542,6 +1590,35 @@ Source: <a href="https://www.wcccd.edu/office-of-the-chancellor/2026-%E2%80%93-2
   window.addEventListener('hashchange', sync);
   sync();
 
+  /* Slideshow viewer for the Presentation tab */
+  var slides = Array.prototype.map.call(document.querySelectorAll('#pres img[src^="pres-"]'), function(im) { return im.getAttribute('src'); });
+  var idx = 0;
+  var ov = document.getElementById('ss-overlay');
+  var img = document.getElementById('ss-img');
+  var count = document.getElementById('ss-count');
+  function showSlide(i) {
+    idx = (i + slides.length) % slides.length;
+    img.src = slides[idx];
+    count.textContent = 'Slide ' + (idx + 1) + ' of ' + slides.length;
+  }
+  function openSS(e) { if (e) e.preventDefault(); ov.style.display = 'flex'; showSlide(0);
+    if (ov.requestFullscreen) ov.requestFullscreen().catch(function() {}); }
+  function closeSS(e) { if (e) e.preventDefault(); ov.style.display = 'none';
+    if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(function() {}); }
+  var startBtn = document.getElementById('ss-start');
+  if (startBtn && slides.length) {
+    startBtn.addEventListener('click', openSS);
+    document.getElementById('ss-prev').addEventListener('click', function(e) { e.preventDefault(); showSlide(idx - 1); });
+    document.getElementById('ss-next').addEventListener('click', function(e) { e.preventDefault(); showSlide(idx + 1); });
+    document.getElementById('ss-close').addEventListener('click', closeSS);
+    img.addEventListener('click', function() { showSlide(idx + 1); });
+    document.addEventListener('keydown', function(e) {
+      if (ov.style.display !== 'flex') return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); showSlide(idx + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); showSlide(idx - 1); }
+      else if (e.key === 'Escape') closeSS();
+    });
+  } else if (startBtn) { startBtn.style.display = 'none'; }
 })();
 </script>
 </body>
